@@ -1,0 +1,26 @@
+.board{
+
+    display: grid;
+    grid-template-columns: repeat(8, 30px);
+    grid-template-rows: repeat(8, 30px);
+
+    margin: auto;   
+
+    /* width: 300px; */
+}
+
+.floorTile{
+    background-image: url("../assets/images/dirtTile.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.wallTile{
+    background-image: url("../assets/images/wallTile.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.endTile{
+    background-image: url("../assets/images/endTile.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
