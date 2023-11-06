@@ -129,9 +129,114 @@ const moveCharacter = (event) => {
 
         }
     }
-
+    if(keyPushed == "ArrowLeft" || keyPushed == "a"){
+        if(canPlayerMoveLeft() ){
+            moveCharacterLeft()
+        }
+    }
+    if(keyPushed == "ArrowUp" || keyPushed == "w"){
+        if(canPlayerMoveTop() ){
+            moveCharacterTop()
+        } 
+    }
+    if(keyPushed == "ArrowDown" || keyPushed == "s"){
+        if(canPlayerMoveBottom() ){
+            moveCharacterBottom()
+        } 
+    }
+    
 }
 
+//MOVEMENT TOP
+const canPlayerMoveBottom = () =>{
+    
+    //Check if the rigth tile is a wall or not and checks if its the end of the maze
+    if (boardArray[playerPositionI+1][playerPositionJ] === 1  ) {
+        return false
+    }
+    if (playerPositionI+1 < 0) {
+        return false
+    }
+    else {
+        return true
+    }
+    
+}
+const moveCharacterBottom =()=>{
+    //We quit one to the position of the player
+    playerPositionI++
+    //We delete the character from his actual tile
+    deleteCharacter()
+
+    //We quit the size of the board to the tile Id
+    tileId = tileId+boardWidth
+    createPlayer(tileId)
+}
+
+
+//MOVEMENT TOP
+const canPlayerMoveTop = () =>{
+    
+    //Check if the rigth tile is a wall or not and checks if its the end of the maze
+    if (boardArray[playerPositionI-1][playerPositionJ] === 1  ) {
+        return false
+    }
+    if (playerPositionI-1 < 0) {
+        return false
+    }
+    else {
+        return true
+    }
+    
+}
+const moveCharacterTop =()=>{
+    //We quit one to the position of the player
+    playerPositionI--
+    //We delete the character from his actual tile
+    deleteCharacter()
+
+    //We quit the size of the board to the tile Id
+    tileId = tileId-boardWidth
+    createPlayer(tileId)
+}
+
+
+//MOVEMETN LEFT
+/**
+ * Function to searh if the player can move to the left
+ * 
+ * @returns true ||false
+ */
+const canPlayerMoveLeft = () =>{
+
+    //Check if the rigth tile is a wall or not and checks if its the end of the maze
+    if (boardArray[playerPositionI][playerPositionJ-1] === 1  ) {
+
+        return false
+    }
+    if (playerPositionJ-1 < 0) {
+        return false
+    }
+    else {
+        return true
+    }
+
+}
+//Function to move the character to the left
+const moveCharacterLeft =()=>{
+    //We quit one to the position of the player
+    playerPositionJ--
+    //We delete the character from his actual tile
+    deleteCharacter()
+
+    //We quit one to the tile id
+    tileId--
+
+    createPlayer(tileId)
+}
+
+
+//MOVEMENT RIGHT
 /**
  * Function to check if the right tile is a wall or not
  * 
@@ -141,8 +246,6 @@ const canPlayerMoveRigth = () => {
     
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
     if (boardArray[playerPositionI][playerPositionJ+1] === 1  ) {
-        console.log(playerPositionI)
-        console.log(playerPositionJ)
 
         return false
     }
@@ -171,7 +274,13 @@ const moveCharacterRight = () => {
 
 }
 
+//CREATION AND DESTRUCTION OF CHARACTER
+/**
+ * Functino to delete the character from his actual tile
+ * 
+ */
 const deleteCharacter = () =>{
+
     //Search the childs of the tile that the player is in 
     let childsToDelete = arrayFichas[tileId].getElementsByTagName("DIV")
 
@@ -208,9 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("keydown", (event) => {
 
     //We make the action of the movement
-    console.log(playerPositionI)
-    console.log(playerPositionJ)
-    
     moveCharacter(event)
 
 })
