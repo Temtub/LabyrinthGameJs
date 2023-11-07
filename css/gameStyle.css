@@ -1,12 +1,13 @@
 .board{
 
     display: grid;
-    grid-template-columns: repeat(8, 30px);
-    grid-template-rows: repeat(8, 30px);
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
 
     margin: auto;   
 
-    /* width: 300px; */
+    width: 700px;
+    height: 700px;
 }
 
 .floorTile{
@@ -33,6 +34,16 @@
     background-size: 100%;
     position: absolute;
     z-index: 15;
-    width: 30px;
-    height: 30px;
+    width: 80px;
+    height: 80px;
+}
+
+.characterMinotaur{
+    background-image: url("../assets/images/enemieMinotaurFront.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: absolute;
+    z-index: 15;
+    width: 80px;
+    height: 80px;
 }

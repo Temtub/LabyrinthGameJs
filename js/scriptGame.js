@@ -16,7 +16,7 @@ const boardArray = [
 ]
 
 //Var to save the tiles of the board
-let arrayFichas = boardGrid.getElementsByTagName("DIV")
+let arrayFichas = boardGrid.getElementsByTagName("SECTION")
 
 //Variable to save the position of the player
 let playerPositionI
@@ -38,7 +38,7 @@ const loadFloor = () => {
 
     for (let i = 0; i < boardSize; i++) {
 
-        let floor = document.createElement("DIV")
+        let floor = document.createElement("SECTION")
         floor.classList.add("floorTile")
         floor.id = i
 
@@ -50,8 +50,8 @@ const loadFloor = () => {
 }
 
 const loadWalls = () => {
-    //Array que contiene todas las fichas en un array
-    let arrayFichas = boardGrid.getElementsByTagName("DIV")
+
+    
     let contadorFichas = 0
 
     //Recorremos el array
@@ -104,6 +104,53 @@ const loadEndStarPlayer = () => {
     }
 }
 
+const loadEnemies = () =>{
+    let randomTileI, randomTileJ
+    
+    //We search the tile until is a valid one
+    do{
+        randomTileI = Math.floor(Math.random()*boardHeight )
+        randomTileJ = Math.floor(Math.random()*boardWidth )
+    }
+    while(checkValidCreationEnemieTile(randomTileI, randomTileJ) )
+
+    console.log(randomTileI)
+    console.log(randomTileJ)    
+    console.log("asntes"+calculateIndex(randomTileI, randomTileJ))
+
+    createEnemieCharacter(randomTileI, randomTileJ)
+    
+}
+
+const checkValidCreationEnemieTile = (tileI, tileJ) =>{
+
+    //We check if the tile is a wall or the end line or start line
+    if(boardArray[tileI][tileJ]===1 || boardArray[tileI][tileJ]===3 || boardArray[tileI][tileJ]===4){
+        return true
+    }
+    return false
+}
+
+const createEnemieCharacter = (posI, posJ)  =>{
+    //We create the enemie minotaur
+    let enemieCharacter = document.createElement("DIV")
+    enemieCharacter.classList.add("characterMinotaur")
+
+    //Generate the enemie in the tile 
+    console.log(calculateIndex(posI, posJ))
+    arrayFichas[calculateIndex(posI, posJ) ].append(enemieCharacter)
+}
+
+/**
+ * Function to calculate the position in the grid based of the array with walls
+ * 
+ * @param {*} i //Position of the array i
+ * @param {*} j //Position of the array j
+ * @returns //The number of the position of grid
+ */
+const calculateIndex = (i, j)=>{
+    return (i * boardWidth) + j
+}
 
 //FUNCIONES DEL JUGADOR
 /**
@@ -117,29 +164,23 @@ const moveCharacter = (event) => {
     let keyPushed = event.key
     
     //If player pushes rigth arrow or letter D it moves rigth
-    if (keyPushed == "ArrowRight" || keyPushed == "d") {
-
+    if (keyPushed === "ArrowRight" || keyPushed === "d") {
         //We search if the player can move to that tile
         if (canPlayerMoveRigth()) {
             moveCharacterRight()
-
-        }
-        else{
-            console.log("no se puede m,over")
-
         }
     }
-    if(keyPushed == "ArrowLeft" || keyPushed == "a"){
+    if(keyPushed === "ArrowLeft" || keyPushed === "a"){
         if(canPlayerMoveLeft() ){
             moveCharacterLeft()
         }
     }
-    if(keyPushed == "ArrowUp" || keyPushed == "w"){
+    if(keyPushed === "ArrowUp" || keyPushed === "w"){
         if(canPlayerMoveTop() ){
             moveCharacterTop()
         } 
     }
-    if(keyPushed == "ArrowDown" || keyPushed == "s"){
+    if(keyPushed === "ArrowDown" || keyPushed === "s"){
         if(canPlayerMoveBottom() ){
             moveCharacterBottom()
         } 
@@ -148,6 +189,11 @@ const moveCharacter = (event) => {
 }
 
 //MOVEMENT TOP
+/**
+ * Function to check if the player can move to the bottom tile
+ * 
+ * @returns true || false
+ */
 const canPlayerMoveBottom = () =>{
     
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
@@ -162,6 +208,9 @@ const canPlayerMoveBottom = () =>{
     }
     
 }
+/**
+ * Function to move the player to the bottom tile 
+ */
 const moveCharacterBottom =()=>{
     //We quit one to the position of the player
     playerPositionI++
@@ -175,6 +224,11 @@ const moveCharacterBottom =()=>{
 
 
 //MOVEMENT TOP
+/**
+ * Function to check if the player can move to the top tile
+ * 
+ * @returns true ||false
+ */
 const canPlayerMoveTop = () =>{
     
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
@@ -189,6 +243,9 @@ const canPlayerMoveTop = () =>{
     }
     
 }
+/**
+ * Function to move the character to the top tile
+ */
 const moveCharacterTop =()=>{
     //We quit one to the position of the player
     playerPositionI--
@@ -217,9 +274,8 @@ const canPlayerMoveLeft = () =>{
     if (playerPositionJ-1 < 0) {
         return false
     }
-    else {
-        return true
-    }
+    return true
+    
 
 }
 //Function to move the character to the left
@@ -252,9 +308,8 @@ const canPlayerMoveRigth = () => {
     if (playerPositionJ+1>=boardWidth) {
         return false
     }
-    else {
-        return true
-    }
+    return true
+    
 }
 
 /**
@@ -276,7 +331,7 @@ const moveCharacterRight = () => {
 
 //CREATION AND DESTRUCTION OF CHARACTER
 /**
- * Functino to delete the character from his actual tile
+ * Function to delete the character from his actual tile
  * 
  */
 const deleteCharacter = () =>{
@@ -311,6 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadFloor()
     loadWalls()
     loadEndStarPlayer()
+    loadEnemies()
 })
 
 //Movimiento del jugador
