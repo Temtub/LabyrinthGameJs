@@ -1,3 +1,6 @@
+.container{
+    background-image: url("../assets/images/background/caveBackground.png");
+}
 .board{
 
     display: grid;
@@ -8,28 +11,29 @@
 
     width: 700px;
     height: 700px;
+    min-width: 700px;
 }
 
 .floorTile{
-    background-image: url("../assets/images/dirtTile.png");
+    background-image: url("../assets/images/tiles/dirtTile.png");
     background-repeat: no-repeat;
     background-size: 100%;
     position: relative;
     z-index: 10;
 }
 .wallTile{
-    background-image: url("../assets/images/wallTile.jpg");
+    background-image: url("../assets/images/tiles/wallTile.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 .endTile{
-    background-image: url("../assets/images/endTile.png");
+    background-image: url("../assets/images/tiles/endTile.png");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
 .character{
-    background-image: url("../assets/images/characterFront.png");
+    background-image: url("../assets/images/character/characterFront.png");
     background-repeat: no-repeat;
     background-size: 100%;
     position: absolute;
@@ -39,11 +43,20 @@
 }
 
 .characterMinotaur{
-    background-image: url("../assets/images/enemieMinotaurFront.png");
+    background-image: url("../assets/images/enemies/enemieMinotaurFront.png");
     background-repeat: no-repeat;
     background-size: 100%;
     position: absolute;
     z-index: 15;
     width: 80px;
     height: 80px;
+}
+
+.battleBoard{
+    width: 800px;
+    height: 700px;
+
+}
+.displayNone{
+    display: none;
 }

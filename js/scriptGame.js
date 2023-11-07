@@ -1,5 +1,6 @@
 
-const boardGrid = document.getElementById("board")
+const board = document.getElementById("board")
+const battleBoard = document.getElementById("battleBoard")
 const boardSize = 64
 
 //Array con el que compararemos las posiciones siendo 1 un muro y 0 un suelo 
@@ -16,7 +17,7 @@ const boardArray = [
 ]
 
 //Var to save the tiles of the board
-let arrayFichas = boardGrid.getElementsByTagName("SECTION")
+let arrayFichas = board.getElementsByTagName("SECTION")
 
 //Variable to save the position of the player
 let playerPositionI
@@ -46,7 +47,7 @@ const loadFloor = () => {
 
     }
 
-    boardGrid.append(fragment)
+    board.append(fragment)
 }
 
 const loadWalls = () => {
@@ -114,10 +115,6 @@ const loadEnemies = () =>{
     }
     while(checkValidCreationEnemieTile(randomTileI, randomTileJ) )
 
-    console.log(randomTileI)
-    console.log(randomTileJ)    
-    console.log("asntes"+calculateIndex(randomTileI, randomTileJ))
-
     createEnemieCharacter(randomTileI, randomTileJ)
     
 }
@@ -137,7 +134,6 @@ const createEnemieCharacter = (posI, posJ)  =>{
     enemieCharacter.classList.add("characterMinotaur")
 
     //Generate the enemie in the tile 
-    console.log(calculateIndex(posI, posJ))
     arrayFichas[calculateIndex(posI, posJ) ].append(enemieCharacter)
 }
 
@@ -152,6 +148,14 @@ const calculateIndex = (i, j)=>{
     return (i * boardWidth) + j
 }
 
+/**
+ * Function that resets the boards showing the board and quitting the battle one
+ */
+const resetBoards = () =>{
+    board.classList.remove("displayNone")
+    battleBoard.classList.add("displayNone")
+}
+
 //FUNCIONES DEL JUGADOR
 /**
  * Function to move detect where the player is moving
@@ -163,6 +167,12 @@ const moveCharacter = (event) => {
     //We declare the variable of the key that have been pushed
     let keyPushed = event.key
     
+    //Check if theres an nemy in the next tile
+    if(checkEnemieInNextTile(keyPushed) ){
+
+        startBattle()
+    }
+
     //If player pushes rigth arrow or letter D it moves rigth
     if (keyPushed === "ArrowRight" || keyPushed === "d") {
         //We search if the player can move to that tile
@@ -188,6 +198,62 @@ const moveCharacter = (event) => {
     
 }
 
+const checkEnemieInNextTile = (key) =>{
+
+    //Check the movement 
+    switch (key) {
+        //Move left
+        case "ArrowLeft":
+        case "a":
+            //Check if the left tile has an enemie
+            if(arrayFichas[tileId-1].hasChildNodes() ){
+                return true
+            }
+
+            break;
+        case "ArrowRight":
+        case "d":
+            // Código para caso 2
+            break;
+        case "ArrowUp":
+        case "w":
+            // Código para caso 3
+            break;
+        case "ArrowDown":
+        case "s":
+
+            break;
+        default:
+            // Código por defecto o caso 4
+    }
+
+    
+}
+
+const startBattle = ()=> {
+    //We quit the maze board
+    unshowMazeBoard()
+
+    //Show the battle board
+    createBattleBoard()
+}
+
+const createBattleBoard = () =>{
+
+    //Show the board
+    showBattleBoard()
+}
+
+/**
+ * Function to quit the main board
+ */
+const unshowMazeBoard=()=>{
+    board.classList.add("displayNone")
+}
+
+const showBattleBoard = () =>{
+    battleBoard.classList.remove("displayNone")
+}
 //MOVEMENT TOP
 /**
  * Function to check if the player can move to the bottom tile
@@ -363,16 +429,21 @@ const createPlayer = (tileId) =>{
 //FLUJO DEL JUEGO
 //Creation of the 
 document.addEventListener("DOMContentLoaded", () => {
+    //Reset the boards so it shows the maze one and not the battle
+    resetBoards()
+    //We charge the grid with the tiles depending of the array generated
     loadFloor()
     loadWalls()
+    //We also create the start tile, the end and the player 
     loadEndStarPlayer()
+    //We load enemies random
     loadEnemies()
 })
 
 //Movimiento del jugador
 document.addEventListener("keydown", (event) => {
 
-    //We make the action of the movement
+    //We make the action of the movement of the player
     moveCharacter(event)
 
 })
