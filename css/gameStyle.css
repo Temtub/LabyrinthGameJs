@@ -1,3 +1,14 @@
+@font-face {
+    font-family: Fight-This;
+    src: url("../assets/fonts/FIGHTT3_.ttf");
+}
+
+/* Variables  */
+:root {
+    --versus-font-family: Fight-This;
+}
+
+  
 .container{
     background-image: url("../assets/images/background/caveBackground.png");
 }
@@ -52,11 +63,83 @@
     height: 80px;
 }
 
+/* Board used when fighting */
 .battleBoard{
     width: 800px;
     height: 700px;
 
+    grid-template-columns: repeat(3,1fr);
+    display: grid;
+    grid-template-areas: 
+    "playerSide vsSide enemieSide"
+    "logSide logSide logSide"
+    ;
+
+    background-color: aliceblue;
 }
+.battleBoard__name{
+    font-size: 4rem;
+    
+}
+.battleBoard__name--vs{
+    font-size: 6rem;
+}
+
+.battleBoard__player{
+    width: 70px;
+}
+.heart{
+    width: 30px;
+    margin: 5px;
+}
+
+/* SIDES///////////// */
+.Side{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    font-family: var(--versus-font-family)
+}
+.playerSide{
+    grid-area: playerSide;
+
+    
+}
+
+.vsSide{
+    grid-area: vsSide;
+
+}
+/* Container of buttons to attack */
+.attacks{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.buttonAttack{
+    width: 30%;
+    border-radius: 3px;
+    
+}
+
+.enemieSide{
+    grid-area: enemieSide;
+
+}
+
+.logSide{
+    grid-area: logSide;
+
+    border: 4px black solid;
+    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    margin: 10px;
+}
+
+
+/* Style for making an object not show */
 .displayNone{
     display: none;
 }

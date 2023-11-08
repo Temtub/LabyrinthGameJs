@@ -1,6 +1,8 @@
 
 const board = document.getElementById("board")
 const battleBoard = document.getElementById("battleBoard")
+
+const showHearts = document.getElementById("showHearts")
 const boardSize = 64
 
 //Array con el que compararemos las posiciones siendo 1 un muro y 0 un suelo 
@@ -15,6 +17,10 @@ const boardArray = [
     [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 0, 1]
 ]
+
+//Lives of the player
+const lives = 5
+let livesActual = 0
 
 //Var to save the tiles of the board
 let arrayFichas = board.getElementsByTagName("SECTION")
@@ -230,6 +236,9 @@ const checkEnemieInNextTile = (key) =>{
     
 }
 
+/**
+ * Function that starts when you found an enemy
+ */
 const startBattle = ()=> {
     //We quit the maze board
     unshowMazeBoard()
@@ -238,10 +247,21 @@ const startBattle = ()=> {
     createBattleBoard()
 }
 
+/**
+ * Function to create the battle board
+ */
 const createBattleBoard = () =>{
 
     //Show the board
     showBattleBoard()
+
+    //We fill the lives
+    fillLives()
+
+    //We show the number of lives
+    showLives(showHearts)
+
+    
 }
 
 /**
@@ -254,6 +274,48 @@ const unshowMazeBoard=()=>{
 const showBattleBoard = () =>{
     battleBoard.classList.remove("displayNone")
 }
+
+/**
+ * Function to fille the hearts of the player
+ */
+const fillLives = () =>{
+    livesActual = lives
+}
+
+/**
+ * Function to show the lives of the player
+ */
+const showLives = (container) =>{
+
+    let fragment = document.createDocumentFragment()
+
+    for(let i=0; i < lives; i++){
+
+        let heart
+        //If theres less lives than the original ones, then it creates an empty heart
+        if(livesActual<=lives && i>livesActual){
+            heart = document.createElement("IMG")
+            heart.setAttribute("src", "../assets/images/hearts/emptyHeart.png")
+            heart.classList.add("heart")
+
+            fragment.append(heart)
+        }
+        //If not it creates a normal heart
+        else{
+            heart = document.createElement("IMG")
+            heart.setAttribute("src", "../assets/images/hearts/fullHeart.png")
+            heart.classList.add("heart")
+
+            fragment.append(heart)
+        }
+
+    }
+
+    //We put the hearts in the specified container
+    container.append(fragment)
+}
+
+
 //MOVEMENT TOP
 /**
  * Function to check if the player can move to the bottom tile

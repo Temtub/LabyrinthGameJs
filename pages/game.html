@@ -21,26 +21,46 @@
         <article id="battleBoard" class="battleBoard">
 
             <!-- Side of the player -->
-            <div class="playerSide">
-                <h1>Tu</h1>
+            <div class="playerSide Side">
+                <h1 class="battleBoard__name">PLAYER</h1>
+
                 <div>
                     <img src="" alt="">
-                    <img src="../assets/images/character/characterSideBattle.png" alt="">
+                    <img class="battleBoard__player" src="../assets/images/character/characterSideBattle.png" alt="">
                 </div>
-                <div class="hearts">
 
+                <div class="showHearts" id="showHearts">
+                    
                 </div>
             </div>
 
             <!-- Side to choose the attack you gona choose -->
-            <div class="vsSide">
-                <h1>VS</h1>
-                <div class="attacks"></div>
+            <div class="vsSide Side">
+                <h1 class="battleBoard__name battleBoard__name--vs">VS</h1>
+
+                <div class="attacks">
+                    <!-- Buttons of attacks -->
+                    <div class="buttonAttack buttonAttack--fire">
+                        <img class="buttonAttack--img" src="../assets/images/tiles/fireButton.png" alt="">
+                    </div>
+                    <div class="buttonAttack buttonAttack--leaf">
+                        <img class="buttonAttack--img" src="../assets/images/tiles/leafButton.png" alt="">
+                    </div>
+                    <div class="buttonAttack buttonAttack--water">
+                        <img class="buttonAttack--img" src="../assets/images/tiles/waterButton.png" alt="">
+                    </div>
+
+                </div>
+
             </div>
 
             <!-- Side where the enemie is -->
-            <div class="enemieSide">
-
+            <div class="enemieSide Side">
+                <h1 class="battleBoard__name">ENEMIE</h1>
+                <div>
+                    <img src="" alt="">
+                    <img class="battleBoard__player" src="../assets/images/enemies/enemieMinotaurLeftBattle.png" alt="">
+                </div>
             </div>
 
             <!-- Side that shows the text of the combat -->
