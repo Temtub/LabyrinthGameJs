@@ -104,7 +104,7 @@
 }
 .playerSide{
     grid-area: playerSide;
-
+    padding-bottom: 30px;
     
 }
 
@@ -117,16 +117,53 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 100%;
 }
 .buttonAttack{
-    width: 30%;
+    width: 60px;
+    height: 60px;
     border-radius: 3px;
     
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: inset 1px 1px 10px 5px rgba(128, 128, 128, 0.253);
+
+    border: 2px gray solid;
+
+    margin: 5px;
+}
+.buttonAttack:hover{
+    border-color: rgb(165, 165, 165);
+
+}
+.buttonAttack--fire{
+    background-color: rgb(151, 73, 9);
+}
+.buttonAttack--fire:hover{
+    background-color: rgb(158, 87, 29);
 }
 
+.buttonAttack--leaf{
+    background-color: rgb(11, 155, 11);
+}
+.buttonAttack--leaf:hover{
+    background-color: rgb(23, 184, 23);
+
+}
+.buttonAttack--water{
+    background-color: rgb(0, 0, 170);
+}
+.buttonAttack--water:hover{
+    background-color: rgb(21, 21, 197);
+}
+.buttonAttack__img{
+    width: 80%;
+}
 .enemieSide{
     grid-area: enemieSide;
-
+    padding-bottom: 150px;
 }
 
 .logSide{

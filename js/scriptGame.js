@@ -215,25 +215,29 @@ const checkEnemieInNextTile = (key) =>{
             if(arrayFichas[tileId-1].hasChildNodes() ){
                 return true
             }
-
             break;
+        //Move rigth
         case "ArrowRight":
         case "d":
-            // Código para caso 2
+            if(arrayFichas[tileId+1].hasChildNodes() ){
+                return true
+            }
             break;
+        //Move up
         case "ArrowUp":
         case "w":
-            // Código para caso 3
+            if (arrayFichas[tileId-boardWidth].hasChildNodes()) {
+                return true
+            }
             break;
+        //Move down
         case "ArrowDown":
         case "s":
-
+            if (arrayFichas[tileId+boardWidth].hasChildNodes()) {
+                return true
+            }
             break;
-        default:
-            // Código por defecto o caso 4
     }
-
-    
 }
 
 /**
