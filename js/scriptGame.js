@@ -1,7 +1,8 @@
 
 const board = document.getElementById("board")
 const battleBoard = document.getElementById("battleBoard")
-
+//Box of the squares to attack
+const attacksBox = document.getElementById("attacksBox")
 const showHearts = document.getElementById("showHearts")
 const boardSize = 64
 
@@ -58,7 +59,7 @@ const loadFloor = () => {
 
 const loadWalls = () => {
 
-    
+
     let contadorFichas = 0
 
     //Recorremos el array
@@ -84,7 +85,7 @@ const loadWalls = () => {
 * Funcion para cargar la linea de meta y la linea de salida
 */
 const loadEndStarPlayer = () => {
-    
+
     let contadorFichas = 0
 
     for (let i = 0; i < boardArray.length; i++) {
@@ -111,36 +112,36 @@ const loadEndStarPlayer = () => {
     }
 }
 
-const loadEnemies = () =>{
+const loadEnemies = () => {
     let randomTileI, randomTileJ
-    
+
     //We search the tile until is a valid one
-    do{
-        randomTileI = Math.floor(Math.random()*boardHeight )
-        randomTileJ = Math.floor(Math.random()*boardWidth )
+    do {
+        randomTileI = Math.floor(Math.random() * boardHeight)
+        randomTileJ = Math.floor(Math.random() * boardWidth)
     }
-    while(checkValidCreationEnemieTile(randomTileI, randomTileJ) )
+    while (checkValidCreationEnemieTile(randomTileI, randomTileJ))
 
     createEnemieCharacter(randomTileI, randomTileJ)
-    
+
 }
 
-const checkValidCreationEnemieTile = (tileI, tileJ) =>{
+const checkValidCreationEnemieTile = (tileI, tileJ) => {
 
     //We check if the tile is a wall or the end line or start line
-    if(boardArray[tileI][tileJ]===1 || boardArray[tileI][tileJ]===3 || boardArray[tileI][tileJ]===4){
+    if (boardArray[tileI][tileJ] === 1 || boardArray[tileI][tileJ] === 3 || boardArray[tileI][tileJ] === 4) {
         return true
     }
     return false
 }
 
-const createEnemieCharacter = (posI, posJ)  =>{
+const createEnemieCharacter = (posI, posJ) => {
     //We create the enemie minotaur
     let enemieCharacter = document.createElement("DIV")
     enemieCharacter.classList.add("characterMinotaur")
 
     //Generate the enemie in the tile 
-    arrayFichas[calculateIndex(posI, posJ) ].append(enemieCharacter)
+    arrayFichas[calculateIndex(posI, posJ)].append(enemieCharacter)
 }
 
 /**
@@ -150,14 +151,14 @@ const createEnemieCharacter = (posI, posJ)  =>{
  * @param {*} j //Position of the array j
  * @returns //The number of the position of grid
  */
-const calculateIndex = (i, j)=>{
+const calculateIndex = (i, j) => {
     return (i * boardWidth) + j
 }
 
 /**
  * Function that resets the boards showing the board and quitting the battle one
  */
-const resetBoards = () =>{
+const resetBoards = () => {
     board.classList.remove("displayNone")
     battleBoard.classList.add("displayNone")
 }
@@ -169,12 +170,12 @@ const resetBoards = () =>{
  * @param {*} event 
  */
 const moveCharacter = (event) => {
-  
+
     //We declare the variable of the key that have been pushed
     let keyPushed = event.key
-    
+
     //Check if theres an nemy in the next tile
-    if(checkEnemieInNextTile(keyPushed) ){
+    if (checkEnemieInNextTile(keyPushed)) {
 
         startBattle()
     }
@@ -186,25 +187,25 @@ const moveCharacter = (event) => {
             moveCharacterRight()
         }
     }
-    if(keyPushed === "ArrowLeft" || keyPushed === "a"){
-        if(canPlayerMoveLeft() ){
+    if (keyPushed === "ArrowLeft" || keyPushed === "a") {
+        if (canPlayerMoveLeft()) {
             moveCharacterLeft()
         }
     }
-    if(keyPushed === "ArrowUp" || keyPushed === "w"){
-        if(canPlayerMoveTop() ){
+    if (keyPushed === "ArrowUp" || keyPushed === "w") {
+        if (canPlayerMoveTop()) {
             moveCharacterTop()
-        } 
+        }
     }
-    if(keyPushed === "ArrowDown" || keyPushed === "s"){
-        if(canPlayerMoveBottom() ){
+    if (keyPushed === "ArrowDown" || keyPushed === "s") {
+        if (canPlayerMoveBottom()) {
             moveCharacterBottom()
-        } 
+        }
     }
-    
+
 }
 
-const checkEnemieInNextTile = (key) =>{
+const checkEnemieInNextTile = (key) => {
 
     //Check the movement 
     switch (key) {
@@ -212,28 +213,28 @@ const checkEnemieInNextTile = (key) =>{
         case "ArrowLeft":
         case "a":
             //Check if the left tile has an enemie
-            if(arrayFichas[tileId-1].hasChildNodes() ){
+            if (arrayFichas[tileId - 1].hasChildNodes()) {
                 return true
             }
             break;
         //Move rigth
         case "ArrowRight":
         case "d":
-            if(arrayFichas[tileId+1].hasChildNodes() ){
+            if (arrayFichas[tileId + 1].hasChildNodes()) {
                 return true
             }
             break;
         //Move up
         case "ArrowUp":
         case "w":
-            if (arrayFichas[tileId-boardWidth].hasChildNodes()) {
+            if (arrayFichas[tileId - boardWidth].hasChildNodes()) {
                 return true
             }
             break;
         //Move down
         case "ArrowDown":
         case "s":
-            if (arrayFichas[tileId+boardWidth].hasChildNodes()) {
+            if (arrayFichas[tileId + boardWidth].hasChildNodes()) {
                 return true
             }
             break;
@@ -243,7 +244,7 @@ const checkEnemieInNextTile = (key) =>{
 /**
  * Function that starts when you found an enemy
  */
-const startBattle = ()=> {
+const startBattle = () => {
     //We quit the maze board
     unshowMazeBoard()
 
@@ -254,7 +255,7 @@ const startBattle = ()=> {
 /**
  * Function to create the battle board
  */
-const createBattleBoard = () =>{
+const createBattleBoard = () => {
 
     //Show the board
     showBattleBoard()
@@ -265,39 +266,38 @@ const createBattleBoard = () =>{
     //We show the number of lives
     showLives(showHearts)
 
-    
 }
 
 /**
  * Function to quit the main board
  */
-const unshowMazeBoard=()=>{
+const unshowMazeBoard = () => {
     board.classList.add("displayNone")
 }
 
-const showBattleBoard = () =>{
+const showBattleBoard = () => {
     battleBoard.classList.remove("displayNone")
 }
 
 /**
  * Function to fille the hearts of the player
  */
-const fillLives = () =>{
+const fillLives = () => {
     livesActual = lives
 }
 
 /**
  * Function to show the lives of the player
  */
-const showLives = (container) =>{
+const showLives = (container) => {
 
     let fragment = document.createDocumentFragment()
 
-    for(let i=0; i < lives; i++){
+    for (let i = 0; i < lives; i++) {
 
         let heart
         //If theres less lives than the original ones, then it creates an empty heart
-        if(livesActual<=lives && i>livesActual){
+        if (livesActual <= lives && i > livesActual) {
             heart = document.createElement("IMG")
             heart.setAttribute("src", "../assets/images/hearts/emptyHeart.png")
             heart.classList.add("heart")
@@ -305,7 +305,7 @@ const showLives = (container) =>{
             fragment.append(heart)
         }
         //If not it creates a normal heart
-        else{
+        else {
             heart = document.createElement("IMG")
             heart.setAttribute("src", "../assets/images/hearts/fullHeart.png")
             heart.classList.add("heart")
@@ -326,31 +326,31 @@ const showLives = (container) =>{
  * 
  * @returns true || false
  */
-const canPlayerMoveBottom = () =>{
-    
+const canPlayerMoveBottom = () => {
+
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
-    if (boardArray[playerPositionI+1][playerPositionJ] === 1  ) {
+    if (boardArray[playerPositionI + 1][playerPositionJ] === 1) {
         return false
     }
-    if (playerPositionI+1 < 0) {
+    if (playerPositionI + 1 < 0) {
         return false
     }
     else {
         return true
     }
-    
+
 }
 /**
  * Function to move the player to the bottom tile 
  */
-const moveCharacterBottom =()=>{
+const moveCharacterBottom = () => {
     //We quit one to the position of the player
     playerPositionI++
     //We delete the character from his actual tile
     deleteCharacter()
 
     //We quit the size of the board to the tile Id
-    tileId = tileId+boardWidth
+    tileId = tileId + boardWidth
     createPlayer(tileId)
 }
 
@@ -361,31 +361,31 @@ const moveCharacterBottom =()=>{
  * 
  * @returns true ||false
  */
-const canPlayerMoveTop = () =>{
-    
+const canPlayerMoveTop = () => {
+
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
-    if (boardArray[playerPositionI-1][playerPositionJ] === 1  ) {
+    if (boardArray[playerPositionI - 1][playerPositionJ] === 1) {
         return false
     }
-    if (playerPositionI-1 < 0) {
+    if (playerPositionI - 1 < 0) {
         return false
     }
     else {
         return true
     }
-    
+
 }
 /**
  * Function to move the character to the top tile
  */
-const moveCharacterTop =()=>{
+const moveCharacterTop = () => {
     //We quit one to the position of the player
     playerPositionI--
     //We delete the character from his actual tile
     deleteCharacter()
 
     //We quit the size of the board to the tile Id
-    tileId = tileId-boardWidth
+    tileId = tileId - boardWidth
     createPlayer(tileId)
 }
 
@@ -396,22 +396,22 @@ const moveCharacterTop =()=>{
  * 
  * @returns true ||false
  */
-const canPlayerMoveLeft = () =>{
+const canPlayerMoveLeft = () => {
 
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
-    if (boardArray[playerPositionI][playerPositionJ-1] === 1  ) {
+    if (boardArray[playerPositionI][playerPositionJ - 1] === 1) {
 
         return false
     }
-    if (playerPositionJ-1 < 0) {
+    if (playerPositionJ - 1 < 0) {
         return false
     }
     return true
-    
+
 
 }
 //Function to move the character to the left
-const moveCharacterLeft =()=>{
+const moveCharacterLeft = () => {
     //We quit one to the position of the player
     playerPositionJ--
     //We delete the character from his actual tile
@@ -431,17 +431,17 @@ const moveCharacterLeft =()=>{
  * @returns true || false
  */
 const canPlayerMoveRigth = () => {
-    
+
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
-    if (boardArray[playerPositionI][playerPositionJ+1] === 1  ) {
+    if (boardArray[playerPositionI][playerPositionJ + 1] === 1) {
 
         return false
     }
-    if (playerPositionJ+1>=boardWidth) {
+    if (playerPositionJ + 1 >= boardWidth) {
         return false
     }
     return true
-    
+
 }
 
 /**
@@ -466,7 +466,7 @@ const moveCharacterRight = () => {
  * Function to delete the character from his actual tile
  * 
  */
-const deleteCharacter = () =>{
+const deleteCharacter = () => {
 
     //Search the childs of the tile that the player is in 
     let childsToDelete = arrayFichas[tileId].getElementsByTagName("DIV")
@@ -480,7 +480,7 @@ const deleteCharacter = () =>{
  * 
  * @param {int} tileId //Tile where the character is going to be created
  */
-const createPlayer = (tileId) =>{
+const createPlayer = (tileId) => {
     //Creation of the player 
     let character = document.createElement("DIV")
 
@@ -489,6 +489,81 @@ const createPlayer = (tileId) =>{
 
     //We add the player to his tile
     arrayFichas[tileId].append(character)
+}
+
+/**
+ * Function to check the type of the attack has clicked
+ * 
+ * @param {*} event //Clicked box
+ * @returns String //Type of attack
+ */
+const checkAttackType = (event) => {
+
+    if (event.target.id === "fire" || event.target.id == "fireImg") {
+        return "fire"
+    }
+    if (event.target.id === "water" || event.target.id == "waterImg") {
+        return "water"
+    }
+    if (event.target.id === "leaf" || event.target.id == "leafImg") {
+        return "leaf"
+    }
+    else {
+        return "noType"
+    }
+}
+
+/**
+ * Function to generate the enemy attack
+ * 
+ * @returns //Type of the enemy attack
+ */
+const generateEnemiAttack = () => {
+    let random
+
+    //While random is 0 it creates anoher number
+    do {
+        random = Math.floor(Math.random() * 4)
+    } while (random == 0);
+
+    //We check what type has been created
+    switch (random) {
+        case 1:
+            return "fire"
+            break
+    
+        case 2:
+            return "water"
+            break
+    
+        case 3:
+            return "leaf"
+            break
+        
+    }
+}
+
+/**
+ * Function to compare the attacks of the enemy and the character
+ * 
+ * @param {*} char //Attack of the character
+ * @param {*} enemy //Attack of the enemy
+ */
+const compareAttacks = (char, enemy) => {
+    var tipos = {
+        fire: 'leaf',
+        leaf: 'water',
+        water: 'fire'
+    }
+
+    if (tipos[char] === enemy) {
+        return char + " gana a " + enemy;
+    } else if (tipos[enemy] === char) {
+        return enemy + " gana a " + char;
+    } else {
+        return "Empate";
+    }
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -513,3 +588,19 @@ document.addEventListener("keydown", (event) => {
     moveCharacter(event)
 
 })
+
+//When you press in an attack
+attacksBox.addEventListener("click", (event) => {
+
+    //Check the attack type 
+    let characterAttack = checkAttackType(event)
+
+    //Generate the enemy type to compare with your attack
+    let enemyAttack = generateEnemiAttack()
+
+    //Check the attacks and check who wins
+    console.log(compareAttacks(characterAttack, enemyAttack))
+
+
+})
+
