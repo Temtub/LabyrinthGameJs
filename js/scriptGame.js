@@ -1,10 +1,12 @@
-
 const board = document.getElementById("board")
 const battleBoard = document.getElementById("battleBoard")
 //Box of the squares to attack
 const attacksBox = document.getElementById("attacksBox")
 const showHearts = document.getElementById("showHearts")
 const boardSize = 64
+
+//Show the results as a log
+const logText = document.getElementById("logText")
 
 //Array con el que compararemos las posiciones siendo 1 un muro y 0 un suelo 
 //El 3 es el inicio y el 4 el final
@@ -260,14 +262,12 @@ const createBattleBoard = () => {
     //Show the board
     showBattleBoard()
 
-    //We fill the lives
-    fillLives()
-
     //We show the number of lives
     showLives(showHearts)
 
 }
 
+//FUNCTIONS TO SHOW OR UNSHOW THE BOARDS
 /**
  * Function to quit the main board
  */
@@ -275,9 +275,28 @@ const unshowMazeBoard = () => {
     board.classList.add("displayNone")
 }
 
+/**
+ * Function to show the battle maze
+ */
 const showBattleBoard = () => {
     battleBoard.classList.remove("displayNone")
+    cleanLog()
 }
+
+/**
+ * Function to quit the battle maze
+ */
+const unshowBattleBoard = () =>{
+    battleBoard.classList.add("displayNone")
+}
+
+/**
+ * Function to add the normal maze
+ */
+const showMazeBoard = () =>{
+    board.classList.remove("displayNone")
+}
+///////////////////////////////////////////////////
 
 /**
  * Function to fille the hearts of the player
@@ -293,11 +312,13 @@ const showLives = (container) => {
 
     let fragment = document.createDocumentFragment()
 
-    for (let i = 0; i < lives; i++) {
+    container.textContent = ""
+
+    for (let i = 1; i <= lives; i++) {
 
         let heart
         //If theres less lives than the original ones, then it creates an empty heart
-        if (livesActual <= lives && i > livesActual) {
+        if (livesActual < lives && i > livesActual) {
             heart = document.createElement("IMG")
             heart.setAttribute("src", "../assets/images/hearts/emptyHeart.png")
             heart.classList.add("heart")
@@ -518,25 +539,21 @@ const checkAttackType = (event) => {
  * 
  * @returns //Type of the enemy attack
  */
-const generateEnemiAttack = () => {
-    let random
-
-    //While random is 0 it creates anoher number
-    do {
-        random = Math.floor(Math.random() * 4)
-    } while (random == 0);
+const generateEnemiAttack = () => {    
+    let random = Math.floor(Math.random() * 3)
+    
 
     //We check what type has been created
     switch (random) {
-        case 1:
+        case 0:
             return "fire"
             break
     
-        case 2:
+        case 1:
             return "water"
             break
     
-        case 3:
+        case 2:
             return "leaf"
             break
         
@@ -557,13 +574,51 @@ const compareAttacks = (char, enemy) => {
     }
 
     if (tipos[char] === enemy) {
-        return char + " gana a " + enemy;
-    } else if (tipos[enemy] === char) {
-        return enemy + " gana a " + char;
-    } else {
-        return "Empate";
-    }
+        return "player"
+    } 
+    if (tipos[enemy] === char) {
+        return "enemy"
+    } 
+    return "same"
+    
 
+}
+
+//FUNCTIONS OF THE BATTLE BOARD WHEN WINNING OR LOOOSING
+const endBattle = () =>{
+
+
+    console.log("endBatle")
+    //Stop showing the battle board
+    unshowBattleBoard()
+
+    //Start showing the maze board
+    showMazeBoard()
+}
+
+/**
+ * Function to quit one hp to the player
+ */
+const quitLife = () =>{
+    //One life less
+    livesActual--
+}
+
+/**
+ * Function to show that the player has made a tie
+ */
+const showTie = () =>{
+    logText.textContent = "Guau, ¡Empate!"
+}
+
+const showLosed = () =>{
+    logText.textContent = "Has perdidio una vida..."
+}
+/**
+ * Function to clean the log
+ */
+const cleanLog = () => {
+    logText.textContent = ""
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -579,6 +634,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadEndStarPlayer()
     //We load enemies random
     loadEnemies()
+    //We fill the lives
+    fillLives()
+    //Clean the log so it doesnt show nothing
+    cleanLog()
 })
 
 //Movimiento del jugador
@@ -599,8 +658,25 @@ attacksBox.addEventListener("click", (event) => {
     let enemyAttack = generateEnemiAttack()
 
     //Check the attacks and check who wins
-    console.log(compareAttacks(characterAttack, enemyAttack))
+    let winner = compareAttacks(characterAttack, enemyAttack)
 
+    //If the wiiner is the player the battle ends
+    if(winner === "player"){
+        console.log("ganaste")
+        endBattle()
+    }
+    if(winner === "enemy"){
+        console.log("perdiste")
+        quitLife()
+        //Show another time the lives now reseted
+        showLives(showHearts)
+        //Show in the log that you have losed
+        showLosed()
+    }
+    else{
+        console.log("empate")
+        cleanLog()
+        showTie()
+    }
 
 })
-
