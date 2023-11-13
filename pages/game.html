@@ -1,83 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juego</title>
 
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/gameStyle.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/gameStyle.css" />
+  </head>
+  <body>
     <div class="container">
+      <!-- Board of the game -->
+      <main id="board" class="board"></main>
 
-        <!-- Board of the game -->
-        <main id="board" class="board">
+      <!-- Board when fighting -->
+      <article id="battleBoard" class="battleBoard">
+        <!-- Side of the player -->
+        <div class="playerSide Side">
+          <h1 class="battleBoard__name">PLAYER</h1>
 
-        </main>
-
-        <!-- Board when fighting -->
-        <article id="battleBoard" class="battleBoard">
-
-            <!-- Side of the player -->
-            <div class="playerSide Side">
-                <h1 class="battleBoard__name">PLAYER</h1>
-
-                <div>
-                    <div class="squareAttack" id="showAttackCharacter">
-                        <img src="" id="showAttackCharacter__img" alt="">
-                    </div>
-                    <img class="battleBoard__player" src="../assets/images/character/characterSideBattle.png" alt="">
-                </div>
-
-                <div class="showHearts" id="showHearts">
-                    
-                </div>
+          <div>
+            <div class="squareAttack" id="showAttackCharacter">
+              <img src="" id="showAttackCharacter__img" alt="" />
             </div>
+            <img
+              class="battleBoard__player"
+              src="../assets/images/character/characterSideBattle.png"
+              alt=""
+            />
+          </div>
 
-            <!-- Side to choose the attack you gona choose -->
-            <div class="vsSide Side">
-                <h1 class="battleBoard__name battleBoard__name--vs">VS</h1>
+          <div class="showHearts" id="showHearts"></div>
+        </div>
 
-                <div class="attacks" id="attacksBox">
-                    <!-- Buttons of attacks -->
-                    <div class="buttonAttack buttonAttack--fire" id="fire">
-                        <img id="fireImg" class="buttonAttack__img" src="../assets/images/tiles/fireButton.png" alt="">
-                    </div>
-                    <div class="buttonAttack buttonAttack--leaf" id="leaf">
-                        <img id="leafImg" class="buttonAttack__img" src="../assets/images/tiles/leafButton.png" alt="">
-                    </div>
-                    <div class="buttonAttack buttonAttack--water" id="water">
-                        <img id="waterImg" class="buttonAttack__img" src="../assets/images/tiles/waterButton.png" alt="">
-                    </div>
+        <!-- Side to choose the attack you gona choose -->
+        <div class="vsSide Side">
+          <h1 class="battleBoard__name battleBoard__name--vs">VS</h1>
 
-                </div>
-
+          <div class="attacks" id="attacksBox">
+            <!-- Buttons of attacks -->
+            <div class="buttonAttack buttonAttack--fire" id="fire">
+              <img
+                id="fireImg"
+                class="buttonAttack__img"
+                src="../assets/images/tiles/fireButton.png"
+                alt=""
+              />
             </div>
-
-            <!-- Side where the enemie is -->
-            <div class="enemieSide Side">
-                <h1 class="battleBoard__name">ENEMIE</h1>
-                <div>
-                    <div class="squareAttack" id="showAttackCharacter">
-                        <img src="" id="showAttackCharacter__img" alt="">
-                    </div>
-                    <img class="battleBoard__player" src="../assets/images/enemies/enemieMinotaurLeftBattle.png" alt="">
-                </div>
+            <div class="buttonAttack buttonAttack--leaf" id="leaf">
+              <img
+                id="leafImg"
+                class="buttonAttack__img"
+                src="../assets/images/tiles/leafButton.png"
+                alt=""
+              />
             </div>
-
-            <!-- Side that shows the text of the combat -->
-            <div class="logSide">
-
-                <p class="logText" id="logText"></p>
+            <div class="buttonAttack buttonAttack--water" id="water">
+              <img
+                id="waterImg"
+                class="buttonAttack__img"
+                src="../assets/images/tiles/waterButton.png"
+                alt=""
+              />
             </div>
-            
+          </div>
+        </div>
 
-        </article>
+        <!-- Side where the enemie is -->
+        <div class="enemieSide Side">
+          <h1 class="battleBoard__name">ENEMIE</h1>
+          <div>
+            <div class="squareAttack" id="showAttackCharacter">
+              <img src="" id="showAttackCharacter__img" alt="" />
+            </div>
+            <img
+              class="battleBoard__player"
+              src="../assets/images/enemies/enemieMinotaurLeftBattle.png"
+              alt=""
+            />
+          </div>
+        </div>
+
+        <!-- Side that shows the text of the combat -->
+        <div class="logSide">
+          <p class="logText" id="logText"></p>
+        </div>
+      </article>
+
+
+
+      <!-- Board for when the player has winned -->
+      <div class="winningBoard" id="winningBoard">
+        <img src="../assets/images/background/victoryPopUp.png" alt="" class="imgWinnText">
+
+        <img class="winnerCharacter" src="../assets/images/character/characterWinner.png" alt="" />
+      </div>
+
+      <!-- Board for when the player has losed -->
+      <div class="losingBoard" id="losingBoard">
+        <h1>HAS MUERTO</h1>
+
+        <img src="../assets/images/character/characterLose.png" alt="" />
+      </div>
     </div>
 
 
     <script src="../js/scriptGame.js"></script>
-</body>
+  </body>
 </html>

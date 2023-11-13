@@ -1,5 +1,9 @@
+//BOARDS
 const board = document.getElementById("board")
 const battleBoard = document.getElementById("battleBoard")
+const winningBoard = document.getElementById("winningBoard")
+const losingBoard = document.getElementById("losingBoard")
+
 //Box of the squares to attack
 const attacksBox = document.getElementById("attacksBox")
 const showHearts = document.getElementById("showHearts")
@@ -36,6 +40,11 @@ let tileId
 //Variable to save the size of the board
 const boardWidth = boardArray[0].length
 const boardHeight = boardArray.length;
+
+//Variable of the character
+let character
+
+let numberOfEnemies = 3
 
 
 //Functions of the game
@@ -163,6 +172,8 @@ const calculateIndex = (i, j) => {
 const resetBoards = () => {
     board.classList.remove("displayNone")
     battleBoard.classList.add("displayNone")
+    winningBoard.classList.add("displayNone")
+    losingBoard.classList.add("displayNone")
 }
 
 //FUNCIONES DEL JUGADOR
@@ -182,31 +193,60 @@ const moveCharacter = (event) => {
         startBattle()
     }
 
+    //Check if the player has reached the end line
+    if(checkEndNextTile(keyPushed)){
+        endGameWin()
+    }
+
     //If player pushes rigth arrow or letter D it moves rigth
     if (keyPushed === "ArrowRight" || keyPushed === "d") {
         //We search if the player can move to that tile
         if (canPlayerMoveRigth()) {
             moveCharacterRight()
+            changePlayerDirection("Right")
         }
     }
     if (keyPushed === "ArrowLeft" || keyPushed === "a") {
         if (canPlayerMoveLeft()) {
             moveCharacterLeft()
+            changePlayerDirection("Left")
         }
     }
     if (keyPushed === "ArrowUp" || keyPushed === "w") {
         if (canPlayerMoveTop()) {
             moveCharacterTop()
+            changePlayerDirection("Up")
         }
     }
     if (keyPushed === "ArrowDown" || keyPushed === "s") {
         if (canPlayerMoveBottom()) {
             moveCharacterBottom()
+            changePlayerDirection("Down")
+
         }
     }
 
 }
 
+
+/**
+ * Function to change the sprite of the character looking side
+ * 
+ * @param {*} key 
+ */
+const changePlayerDirection = (key) =>{
+
+    character.style.backgroundImage = " url(../assets/images/character/character"+key+".png)"
+
+}
+
+
+/**
+ * Function to check if theres an enemy in the next tile
+ * 
+ * @param {string} key 
+ * @returns 
+ */
 const checkEnemieInNextTile = (key) => {
 
     //Check the movement 
@@ -236,13 +276,68 @@ const checkEnemieInNextTile = (key) => {
         //Move down
         case "ArrowDown":
         case "s":
-            if (arrayFichas[tileId + boardWidth].hasChildNodes()) {
-                return true
+            if(canPlayerMoveBottom){
+
+                if (arrayFichas[tileId + boardWidth].hasChildNodes()) {
+                    return true
+                }
             }
             break;
     }
 }
 
+/**
+ * Function to check if the player has reached the end line
+ * 
+ * @returns 
+ */
+const endGameWin = () =>{
+    
+    //Quit the maze
+    unshowMazeBoard()
+
+    //Show the winning board
+    showWinningBoard()
+}
+
+
+const checkEndNextTile = (key) =>{
+    switch (key) {
+        //Move left
+        case "ArrowLeft":
+        case "a":
+            //Check if the left tile is the end
+            if (boardArray[playerPositionI][playerPositionJ-1] === 4){
+                return true
+            }
+            break;
+        //Move rigth
+        case "ArrowRight":
+        case "d":
+            if (boardArray[playerPositionI][playerPositionJ+1] === 4){
+                return true
+            }
+            break;
+        //Move up
+        case "ArrowUp":
+        case "w":
+            if (playerPositionI - boardWidth >= 0 && playerPositionI - boardWidth < boardArray.length) {
+                if (boardArray[playerPositionI - boardWidth][playerPositionJ] === 4) {
+                    return true;
+                }
+            }
+            break;
+        //Move down
+        case "ArrowDown":
+        case "s":
+            if(playerPositionI + boardWidth >= 0 && playerPositionI + boardWidth < boardArray.length) {
+                if (boardArray[playerPositionI + boardWidth][playerPositionJ] === 4) {
+                    return true;
+                }
+            }
+            break;
+    }
+}
 /**
  * Function that starts when you found an enemy
  */
@@ -295,6 +390,13 @@ const unshowBattleBoard = () =>{
  */
 const showMazeBoard = () =>{
     board.classList.remove("displayNone")
+}
+
+/**
+ * Function to create the winning board
+ */
+const showWinningBoard = () =>{
+    winningBoard.classList.remove("displayNone")
 }
 ///////////////////////////////////////////////////
 
@@ -350,10 +452,10 @@ const showLives = (container) => {
 const canPlayerMoveBottom = () => {
 
     //Check if the rigth tile is a wall or not and checks if its the end of the maze
-    if (boardArray[playerPositionI + 1][playerPositionJ] === 1) {
+    if (playerPositionI + 1 < 0) {
         return false
     }
-    if (playerPositionI + 1 < 0) {
+    if (boardArray[playerPositionI + 1][playerPositionJ] === 1) {
         return false
     }
     else {
@@ -493,7 +595,7 @@ const deleteCharacter = () => {
     let childsToDelete = arrayFichas[tileId].getElementsByTagName("DIV")
 
     //We delete it from there
-    arrayFichas[tileId].removeChild(childsToDelete[0])
+    arrayFichas[tileId].removeChild(childsToDelete[0] )
 }
 
 /**
@@ -503,7 +605,7 @@ const deleteCharacter = () => {
  */
 const createPlayer = (tileId) => {
     //Creation of the player 
-    let character = document.createElement("DIV")
+    character = document.createElement("DIV")
 
     //Give the style to the character
     character.classList.add("character")
@@ -547,15 +649,12 @@ const generateEnemiAttack = () => {
     switch (random) {
         case 0:
             return "fire"
-            break
     
         case 1:
             return "water"
-            break
     
         case 2:
             return "leaf"
-            break
         
     }
 }
@@ -586,9 +685,6 @@ const compareAttacks = (char, enemy) => {
 
 //FUNCTIONS OF THE BATTLE BOARD WHEN WINNING OR LOOOSING
 const endBattle = () =>{
-
-
-    console.log("endBatle")
     //Stop showing the battle board
     unshowBattleBoard()
 
@@ -610,7 +706,10 @@ const quitLife = () =>{
 const showTie = () =>{
     logText.textContent = "Guau, ¡Empate!"
 }
+const showWin = () =>{
+    logText.textContent = "ENHORABUENA, ¡Has ganado!"
 
+}
 const showLosed = () =>{
     logText.textContent = "Has perdidio una vida..."
 }
@@ -620,6 +719,53 @@ const showLosed = () =>{
 const cleanLog = () => {
     logText.textContent = ""
 }
+
+/**
+ * Function to check if the game has ended
+ * 
+ * @returns boolean //Returns if the game has ended
+ */
+const checkLosedGame = () =>{
+    if(livesActual <= 0){
+
+        return true
+    }
+
+    return false
+}
+
+const showLogLosedGame = () =>{
+    logText.textContent = "Has muerto... 💀💀💀"
+}
+const endGameLose = () =>{
+    unshowBattleBoard()
+
+}
+
+/**
+ * Function to disable clicks of the attacks
+ */
+const disableClicks = () =>  {
+    //Select elements from the box
+    const clickableElements = attacksBox.querySelectorAll("*")
+
+    clickableElements.forEach(element => {
+        element.style.pointerEvents = 'none'
+    });
+}
+
+/**
+ * Function to enable clicks of the attacks
+ */
+const enableClicks = () =>{
+    //Select elements from the attack box
+    const clickableElements = attacksBox.querySelectorAll('*')
+
+    clickableElements.forEach(element => {
+        element.style.pointerEvents = 'auto';
+    });
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //FLUJO DEL JUEGO
@@ -633,7 +779,10 @@ document.addEventListener("DOMContentLoaded", () => {
     //We also create the start tile, the end and the player 
     loadEndStarPlayer()
     //We load enemies random
-    loadEnemies()
+    for(let i = 0; i<numberOfEnemies; i++){
+        loadEnemies()
+    }
+      
     //We fill the lives
     fillLives()
     //Clean the log so it doesnt show nothing
@@ -659,12 +808,33 @@ attacksBox.addEventListener("click", (event) => {
 
     //Check the attacks and check who wins
     let winner = compareAttacks(characterAttack, enemyAttack)
+    
+    console.log(winner)
+
 
     //If the wiiner is the player the battle ends
     if(winner === "player"){
-        console.log("ganaste")
-        endBattle()
+        console.log("gaanset")
+        //Show in the log that the player has winned
+        showWin()
+
+        //Disable the clicks so the player can attack its enemies
+        disableClicks()
+        
+        setTimeout(() => {
+            //Finishe the battle
+            endBattle()
+        }, 2000)
+        
+        //Delete the two characters that there are in the tiles
+        deleteCharacter()
+        deleteCharacter()
+
+        //We recreate the character 
+        createPlayer(tileId)
+           
     }
+    //If the winner is the enemy 
     if(winner === "enemy"){
         console.log("perdiste")
         quitLife()
@@ -672,11 +842,20 @@ attacksBox.addEventListener("click", (event) => {
         showLives(showHearts)
         //Show in the log that you have losed
         showLosed()
+
     }
+    //A tie
     else{
         console.log("empate")
         cleanLog()
         showTie()
     }
 
+    //Check if player have losed all lives
+    if(checkLosedGame()){
+        
+        endGameLose()
+
+        showLogLosedGame()
+    }
 })
