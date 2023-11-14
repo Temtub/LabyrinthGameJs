@@ -2,6 +2,10 @@
     font-family: Fight-This;
     src: url("../assets/fonts/FIGHTT3_.ttf");
 }
+@font-face {
+    font-family: VT323;
+    src: url("../assets/fonts/VT323-Regular.ttf");
+}
 
 /* Variables  */
 :root {
@@ -67,7 +71,7 @@
 .battleBoard{
     width: 800px;
     height: 700px;
-
+    position: relative;
     grid-template-columns: repeat(3,1fr);
     display: grid;
     grid-template-areas: 
@@ -75,18 +79,48 @@
     "logSide logSide logSide"
     ;
 
-    background-color: aliceblue;
+    background-image: url("../assets/images/background/battleGround.png");
+    background-position: center;
+    background-size: cover;
+    background-position-x: 90%;
+    background-position-y: -20px;
+    background-repeat: space;
 }
 .battleBoard__name{
     font-size: 4rem;
+}
+.battleBoard__player{
+    width: 60px;
+}
+.battleBoard__player--enemie{
     
+    position: absolute;
+    bottom: 230px;
+    right: 120px;
+    margin-bottom: 20px;
+
 }
 .battleBoard__name--vs{
     font-size: 6rem;
 }
+.battleBoard__img{
+    width: 120%;
+    
+    position: absolute;
+    bottom: -20px;
+    left: -140px;
 
-.battleBoard__player{
-    width: 70px;
+    z-index: 3;
+    transform: scaleX(-1);
+    display: none;
+}
+
+.showHearts{
+    background-color: rgba(33, 44, 78, 0.589);
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px;
 }
 .heart{
     width: 30px;
@@ -168,11 +202,16 @@
 
 .logSide{
     grid-area: logSide;
-
+    font-family: VT323;
+    font-size: 2rem;
     border: 4px black solid;
     background-color: rgb(238, 238, 238);
     border-radius: 5px;
-    margin: 10px;
+
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: -90px;
+    height: 150px;
 }
 
 /* Styles for the winnng board */
@@ -196,8 +235,43 @@
     width: 100px;
 }
 
-
+/* Board for when the player have losed */
 .losingBoard{
+    margin: auto;
+    width: 800px;
+    height: 500px;
+
+    background-color: black;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.losingBoard__text{
+    color: red;
+    font-size: 2rem;
+    font-weight: 10;
+}
+.losingBoard__characterDiying{
+    width: 80px;
+}
+
+.replayButton{
+    text-align: center;
+	display: inline-block;
+
+	margin:5px;
+    
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    padding: 10px 10px 10px 10px ;
+    background-color: lightgray;
+    
+	border-radius: 7px;
+    
+    font-family: 'VT323';
 
 }
 

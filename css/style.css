@@ -25,6 +25,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     background-image: url("../assets/images/background/backgroundJungle.png");
     background-size: cover;

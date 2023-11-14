@@ -3,6 +3,8 @@ const board = document.getElementById("board")
 const battleBoard = document.getElementById("battleBoard")
 const winningBoard = document.getElementById("winningBoard")
 const losingBoard = document.getElementById("losingBoard")
+const replay = document.getElementById("replay")
+
 
 //Box of the squares to attack
 const attacksBox = document.getElementById("attacksBox")
@@ -12,39 +14,79 @@ const boardSize = 64
 //Show the results as a log
 const logText = document.getElementById("logText")
 
-//Array con el que compararemos las posiciones siendo 1 un muro y 0 un suelo 
-//El 3 es el inicio y el 4 el final
-const boardArray = [
+//Array that contains all the mazes
+const mazeAllArrays = []
+
+//Array that will save the actual maze
+let boardArray = []
+//Array that we use to compare the positions wich 1 is wall and 0 is floor
+//The 3 is the beggining and the 4 is the end
+const boardArray1 = [
     [1, 1, 1, 1, 1, 1, 1, 1],
-    [4, 0, 1, 0, 1, 0, 1, 1],
-    [1, 0, 0, 0, 1, 0, 0, 1],
-    [1, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 3, 0, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 4, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 0, 1, 1, 1, 1, 1],
+    [1, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 0, 1, 3, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1]
+]
+const boardArray2 = [
+    [1, 1, 1, 1, 1, 3, 1, 1],
+    [4, 0, 0, 0, 1, 0, 1, 1],
+    [1, 1, 0, 0, 1, 0, 0, 1],
+    [1, 0, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 1, 0, 1],
     [1, 1, 0, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 0, 1]
+    [1, 1, 1, 1, 1, 1, 1, 1]
 ]
+const boardArray3 = [
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 0, 1],
+    [1, 0, 1, 4, 0, 1, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 3, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1]
+  ]
+mazeAllArrays.push(boardArray1)
+mazeAllArrays.push(boardArray2)
+mazeAllArrays.push(boardArray3)
 
 //Lives of the player
-const lives = 5
+const lives = 3
 let livesActual = 0
 
 //Var to save the tiles of the board
 let arrayFichas = board.getElementsByTagName("SECTION")
+/**
+ * Function to save in the varaible boardArray the a random maze from the array that contains all the arrays
+ */
+const chooseMaze = () =>{
+    let randomMaze = Math.floor(Math.random()*mazeAllArrays.length)
+
+    boardArray = mazeAllArrays[randomMaze]
+}
+
+chooseMaze()
+
+
+//Variable to save the size of the board
+const boardWidth = boardArray[0].length
+const boardHeight = boardArray.length
 
 //Variable to save the position of the player
 let playerPositionI
 let playerPositionJ
 let tileId
 
-//Variable to save the size of the board
-const boardWidth = boardArray[0].length
-const boardHeight = boardArray.length;
-
 //Variable of the character
 let character
 
 let numberOfEnemies = 3
+
 
 
 //Functions of the game
@@ -180,7 +222,7 @@ const resetBoards = () => {
 /**
  * Function to move detect where the player is moving
  * 
- * @param {*} event 
+ * @param {String} event 
  */
 const moveCharacter = (event) => {
 
@@ -189,7 +231,7 @@ const moveCharacter = (event) => {
 
     //Check if theres an nemy in the next tile
     if (checkEnemieInNextTile(keyPushed)) {
-
+        console.log("startBattle")
         startBattle()
     }
 
@@ -276,7 +318,7 @@ const checkEnemieInNextTile = (key) => {
         //Move down
         case "ArrowDown":
         case "s":
-            if(canPlayerMoveBottom){
+            if(canPlayerMoveBottom()){
 
                 if (arrayFichas[tileId + boardWidth].hasChildNodes()) {
                     return true
@@ -307,33 +349,33 @@ const checkEndNextTile = (key) =>{
         case "ArrowLeft":
         case "a":
             //Check if the left tile is the end
-            if (boardArray[playerPositionI][playerPositionJ-1] === 4){
+            if (playerPositionJ - 1 >= 0 && boardArray[playerPositionI][playerPositionJ - 1] === 4){
                 return true
             }
             break;
         //Move rigth
         case "ArrowRight":
         case "d":
-            if (boardArray[playerPositionI][playerPositionJ+1] === 4){
+            if (playerPositionJ + 1 < boardWidth && boardArray[playerPositionI][playerPositionJ + 1] === 4){
                 return true
             }
             break;
         //Move up
         case "ArrowUp":
         case "w":
-            if (playerPositionI - boardWidth >= 0 && playerPositionI - boardWidth < boardArray.length) {
-                if (boardArray[playerPositionI - boardWidth][playerPositionJ] === 4) {
+            if (playerPositionI - 1 >= 0 && boardArray[playerPositionI - 1][playerPositionJ] === 4) {
+                
                     return true;
-                }
+                
             }
             break;
         //Move down
         case "ArrowDown":
         case "s":
-            if(playerPositionI + boardWidth >= 0 && playerPositionI + boardWidth < boardArray.length) {
-                if (boardArray[playerPositionI + boardWidth][playerPositionJ] === 4) {
-                    return true;
-                }
+            if(playerPositionI + 1 < boardHeight && boardArray[playerPositionI + 1][playerPositionJ] === 4) {
+                
+                return true;
+                
             }
             break;
     }
@@ -397,6 +439,13 @@ const showMazeBoard = () =>{
  */
 const showWinningBoard = () =>{
     winningBoard.classList.remove("displayNone")
+}
+
+/**
+ * Function to show the losing board
+ */
+const showLosingBoard = () =>{
+    losingBoard.classList.remove("displayNone")
 }
 ///////////////////////////////////////////////////
 
@@ -621,14 +670,14 @@ const createPlayer = (tileId) => {
  * @returns String //Type of attack
  */
 const checkAttackType = (event) => {
-
-    if (event.target.id === "fire" || event.target.id == "fireImg") {
+    console.log(event.target)
+    if (event.target.id === "fire" || event.target.id === "fireImg") {
         return "fire"
     }
-    if (event.target.id === "water" || event.target.id == "waterImg") {
+    if (event.target.id === "water" || event.target.id === "waterImg") {
         return "water"
     }
-    if (event.target.id === "leaf" || event.target.id == "leafImg") {
+    if (event.target.id === "leaf" || event.target.id === "leafImg") {
         return "leaf"
     }
     else {
@@ -643,6 +692,7 @@ const checkAttackType = (event) => {
  */
 const generateEnemiAttack = () => {    
     let random = Math.floor(Math.random() * 3)
+    
     
 
     //We check what type has been created
@@ -672,13 +722,18 @@ const compareAttacks = (char, enemy) => {
         water: 'fire'
     }
 
+    console.log("t"+tipos[char] + "c"+char +"e"+ enemy)
     if (tipos[char] === enemy) {
         return "player"
     } 
     if (tipos[enemy] === char) {
         return "enemy"
     } 
-    return "same"
+    else{
+        return "same"
+    }
+
+    
     
 
 }
@@ -708,7 +763,6 @@ const showTie = () =>{
 }
 const showWin = () =>{
     logText.textContent = "ENHORABUENA, ¡Has ganado!"
-
 }
 const showLosed = () =>{
     logText.textContent = "Has perdidio una vida..."
@@ -738,8 +792,11 @@ const showLogLosedGame = () =>{
     logText.textContent = "Has muerto... 💀💀💀"
 }
 const endGameLose = () =>{
+    //Delete the normal board
     unshowBattleBoard()
 
+    //Show the losing board
+    showLosingBoard()
 }
 
 /**
@@ -771,6 +828,8 @@ const enableClicks = () =>{
 //FLUJO DEL JUEGO
 //Creation of the 
 document.addEventListener("DOMContentLoaded", () => {
+    //Choose what maze is it goingto be used
+    chooseMaze()
     //Reset the boards so it shows the maze one and not the battle
     resetBoards()
     //We charge the grid with the tiles depending of the array generated
@@ -805,6 +864,7 @@ attacksBox.addEventListener("click", (event) => {
 
     //Generate the enemy type to compare with your attack
     let enemyAttack = generateEnemiAttack()
+    
 
     //Check the attacks and check who wins
     let winner = compareAttacks(characterAttack, enemyAttack)
@@ -815,15 +875,17 @@ attacksBox.addEventListener("click", (event) => {
     //If the wiiner is the player the battle ends
     if(winner === "player"){
         console.log("gaanset")
-        //Show in the log that the player has winned
-        showWin()
 
         //Disable the clicks so the player can attack its enemies
         disableClicks()
+
+        //Show in the log that the player has winned
+        showWin()
         
         setTimeout(() => {
             //Finishe the battle
             endBattle()
+            enableClicks()
         }, 2000)
         
         //Delete the two characters that there are in the tiles
@@ -845,7 +907,7 @@ attacksBox.addEventListener("click", (event) => {
 
     }
     //A tie
-    else{
+    if(winner === "same"){
         console.log("empate")
         cleanLog()
         showTie()
@@ -853,9 +915,18 @@ attacksBox.addEventListener("click", (event) => {
 
     //Check if player have losed all lives
     if(checkLosedGame()){
-        
-        endGameLose()
-
+        //Disable the clicks so the player can attack its enemies
+        disableClicks()
         showLogLosedGame()
+        setTimeout(() => {
+            endGameLose()
+            enableClicks()
+        }, 2000)
     }
 })
+
+//Button to recharge the game
+replay.addEventListener("click",() => {
+    location.reload()
+})
+

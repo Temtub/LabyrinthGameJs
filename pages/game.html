@@ -12,9 +12,12 @@
     <div class="container">
       <!-- Board of the game -->
       <main id="board" class="board"></main>
-
+      
       <!-- Board when fighting -->
       <article id="battleBoard" class="battleBoard">
+
+        <!-- Image where the characters are fighting -->
+        <img src="../assets/images/background/battleGround.png" alt="" class="battleBoard__img">
         <!-- Side of the player -->
         <div class="playerSide Side">
           <h1 class="battleBoard__name">PLAYER</h1>
@@ -74,7 +77,7 @@
               <img src="" id="showAttackCharacter__img" alt="" />
             </div>
             <img
-              class="battleBoard__player"
+              class="battleBoard__player battleBoard__player--enemie"
               src="../assets/images/enemies/enemieMinotaurLeftBattle.png"
               alt=""
             />
@@ -98,12 +101,15 @@
 
       <!-- Board for when the player has losed -->
       <div class="losingBoard" id="losingBoard">
-        <h1>HAS MUERTO</h1>
+        <h1 class="losingBoard__text">HAS MUERTO</h1>
 
-        <img src="../assets/images/character/characterLose.png" alt="" />
+        <img class="losingBoard__characterDiying" src="../assets/images/character/characterLose.png" alt="" />
+
       </div>
+      
+      <button id="replay" class="replayButton">Volver a intentar</button>      
     </div>
-
+    
 
     <script src="../js/scriptGame.js"></script>
   </body>
