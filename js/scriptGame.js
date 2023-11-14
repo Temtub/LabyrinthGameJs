@@ -182,7 +182,7 @@ const loadEnemies = () => {
 const checkValidCreationEnemieTile = (tileI, tileJ) => {
 
     //We check if the tile is a wall or the end line or start line
-    if (boardArray[tileI][tileJ] === 1 || boardArray[tileI][tileJ] === 3 || boardArray[tileI][tileJ] === 4) {
+    if (boardArray[tileI][tileJ] === 1 || boardArray[tileI][tileJ] === 3 || boardArray[tileI][tileJ] === 4 || arrayFichas[calculateIndex(tileI, tileJ)].hasChildNodes() ) {
         return true
     }
     return false
@@ -874,7 +874,6 @@ attacksBox.addEventListener("click", (event) => {
 
     //If the wiiner is the player the battle ends
     if(winner === "player"){
-        console.log("gaanset")
 
         //Disable the clicks so the player can attack its enemies
         disableClicks()
@@ -898,7 +897,7 @@ attacksBox.addEventListener("click", (event) => {
     }
     //If the winner is the enemy 
     if(winner === "enemy"){
-        console.log("perdiste")
+        
         quitLife()
         //Show another time the lives now reseted
         showLives(showHearts)
